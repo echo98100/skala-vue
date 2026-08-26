@@ -1,0 +1,26 @@
+<template>
+  <div class="base-card">
+    <h3>하위 컴포넌트</h3>
+    <slot :text="message" :count="userCount">
+      <p>부모가 마크업을 주입하지 않았을 때 기본화면</p>
+    </slot>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const message = ref('현재 서버 상태 정상')
+const userCount = ref(150)
+</script>
+
+<style scoped>
+.base-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+</style>

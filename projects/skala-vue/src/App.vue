@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { RouterLink, RouterView } from 'vue-router'
 import VueBind from './components/practices/basic/day1/VueBind.vue'
 import VueBindStyle from './components/practices/basic/day1/VueBindStyle.vue'
 import VueBindClass from './components/practices/basic/day1/VueBindClass.vue'
@@ -35,6 +36,12 @@ import WatchersRefArray from './components/practices/basic/day2/WatchersRefArray
 import WatchersReactiveArray from './components/practices/basic/day2/WatchersReactiveArray.vue'
 import WatchersWatchEffect from './components/practices/basic/day2/WatchersWatchEffect.vue'
 import WeatherComposition from './components/exercise/WeatherComposition.vue'
+import LifeCycleParent from './components/practices/basic/day3/LifeCycleParent.vue'
+import PropsEmitsParent from './components/practices/basic/day3/PropsEmitsParent.vue'
+import SlotDefaultParent from './components/practices/basic/day3/SlotDefaultParent.vue'
+import SlotNamedParent from './components/practices/basic/day3/SlotNamedParent.vue'
+import SlotScopedParent from './components/practices/basic/day3/SlotScopedParent.vue'
+import WeatherParent from './components/exercise/day3/WeatherParent.vue'
 
 const activeTab = ref('day1')
 </script>
@@ -53,6 +60,12 @@ const activeTab = ref('day1')
       </button>
       <button :class="{ active: activeTab === 'exercise2' }" @click="activeTab = 'exercise2'">
         과제2
+      </button>
+      <button :class="{ active: activeTab === 'exercise3' }" @click="activeTab = 'exercise3'">
+        과제3
+      </button>
+      <button :class="{ active: activeTab === 'exercise4' }" @click="activeTab = 'exercise4'">
+        과제4
       </button>
     </div>
 
@@ -115,6 +128,21 @@ const activeTab = ref('day1')
       <WatchersWatchEffect />
     </div>
 
+    <!-- Day3 -->
+    <div v-if="activeTab === 'day3'">
+      <h1>8. Component Lifecycle</h1>
+      <hr />
+      <LifeCycleParent />
+      <h1>9. Props & Emits</h1>
+      <hr />
+      <PropsEmitsParent />
+      <h1>10. Component Slot</h1>
+      <hr />
+      <SlotDefaultParent />
+      <SlotNamedParent />
+      <SlotScopedParent />
+    </div>
+
     <!-- 과제 1-->
     <div v-if="activeTab === 'exercise1'">
       <WeatherMockup />
@@ -123,6 +151,26 @@ const activeTab = ref('day1')
     <!-- 과제 2-->
     <div v-if="activeTab === 'exercise2'">
       <WeatherComposition />
+    </div>
+
+    <!-- 과제 3-->
+    <div v-if="activeTab === 'exercise3'">
+      <WeatherParent />
+    </div>
+
+    <!-- 과제 4 Router 활용 -->
+    <div v-if="activeTab === 'exercise4'">
+      <div class="weather-router-shell">
+        <!-- 네비게이션 영역 -->
+        <nav class="router-nav">
+          <RouterLink to="/" class="router-nav-link">홈</RouterLink>
+          <RouterLink to="/favorites" class="router-nav-link">즐겨찾기</RouterLink>
+          <RouterLink to="/about" class="router-nav-link">소개</RouterLink>
+        </nav>
+
+        <!-- 콘텐츠 영역 -->
+        <RouterView />
+      </div>
     </div>
   </div>
 </template>
@@ -188,5 +236,56 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+
+.weather-router-shell {
+  --sky-1: #eef4fb;
+  --sky-2: #dbe9f8;
+  --ink: #1f2a3c;
+  --sub: #5b6b82;
+  --hot: #e0622b;
+  --hot-bg: #fdece1;
+  --cold: #2b7fe0;
+  --cold-bg: #e6f0fd;
+  --card-bg: #ffffff;
+  --border: #d9e3f0;
+  --accent: #2f5fae;
+
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, var(--sky-1), var(--sky-2) 70%);
+}
+
+.router-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.router-nav-link {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sub);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--border);
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
+}
+
+.router-nav-link:hover {
+  background: var(--sky-1);
+  color: var(--accent);
+}
+
+.router-nav-link.router-link-exact-active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 </style>
