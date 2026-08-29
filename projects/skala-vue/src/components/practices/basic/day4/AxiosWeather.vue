@@ -33,8 +33,16 @@ const isLoading = ref(false)
 
 const handleFetchWeather = async () => {
     isLoading.value = true
+    
+    const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
 
-    const API_KEY = '8964edc63b366d27b5b728b7976570b7'
+    if (!API_KEY) {
+      console.error('VITE_OPENWEATHER_API_KEY가 설정되지 않았습니다. .env 파일을 확인하세요.')
+      alert('API 키가 설정되지 않았습니다. .env 파일에 VITE_OPENWEATHER_API_KEY를 추가해주세요.')
+      isLoading.value = false
+      return
+    }
+
     const URL = `https://api.openweathermap.org/data/2.5/weather?lat=35.158582&lon=126.804975&appid=${API_KEY}&units=metric&lang=kr`
 
     try {
