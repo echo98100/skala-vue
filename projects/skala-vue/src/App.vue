@@ -42,214 +42,440 @@ import SlotDefaultParent from './components/practices/basic/day3/SlotDefaultPare
 import SlotNamedParent from './components/practices/basic/day3/SlotNamedParent.vue'
 import SlotScopedParent from './components/practices/basic/day3/SlotScopedParent.vue'
 import WeatherParent from './components/exercise/day3/WeatherParent.vue'
+import StoreCounter from './components/practices/basic/day4/StoreCounter.vue'
+import AxiosWeather from './components/practices/basic/day4/AxiosWeather.vue'
+import UnitToggler from './components/exercise/UnitToggler.vue'
 
 const activeTab = ref('day1')
 </script>
 
 <template>
-  <h1>Hello Skala-Vue</h1>
+  <div class="app-shell">
+    <header class="app-shell-header">
+      <h1 class="app-title">Hello Skala-Vue</h1>
 
-  <div style="padding: 20px">
-    <!-- 탭 -->
-    <div class="tabs">
-      <button :class="{ active: activeTab === 'day1' }" @click="activeTab = 'day1'">Day1</button>
-      <button :class="{ active: activeTab === 'day2' }" @click="activeTab = 'day2'">Day2</button>
-      <button :class="{ active: activeTab === 'day3' }" @click="activeTab = 'day3'">Day3</button>
-      <button :class="{ active: activeTab === 'exercise1' }" @click="activeTab = 'exercise1'">
-        과제1
-      </button>
-      <button :class="{ active: activeTab === 'exercise2' }" @click="activeTab = 'exercise2'">
-        과제2
-      </button>
-      <button :class="{ active: activeTab === 'exercise3' }" @click="activeTab = 'exercise3'">
-        과제3
-      </button>
-      <button :class="{ active: activeTab === 'exercise4' }" @click="activeTab = 'exercise4'">
-        과제4
-      </button>
-    </div>
+      <!-- 탭: 커리큘럼 성격이 다른 두 갈래(학습 진행 / 과제 제출)를 시각적으로 구분 -->
+      <div class="tab-groups">
+        <div class="tab-group">
+          <span class="tab-group-label">실습</span>
+          <div class="tab-row">
+            <button
+              class="tab-btn"
+              :class="{ active: activeTab === 'day1' }"
+              @click="activeTab = 'day1'"
+            >
+              Day1
+            </button>
+            <button
+              class="tab-btn"
+              :class="{ active: activeTab === 'day2' }"
+              @click="activeTab = 'day2'"
+            >
+              Day2
+            </button>
+            <button
+              class="tab-btn"
+              :class="{ active: activeTab === 'day3' }"
+              @click="activeTab = 'day3'"
+            >
+              Day3
+            </button>
+            <button
+              class="tab-btn"
+              :class="{ active: activeTab === 'day4' }"
+              @click="activeTab = 'day4'"
+            >
+              Day4
+            </button>
+          </div>
+        </div>
 
-    <!-- Day1 -->
-    <div v-if="activeTab === 'day1'">
-      <h1>Day1</h1>
-      <hr />
-      <h1>1. 학습환경 구성</h1>
-      <hr />
-      <SampleOne />
-      <SampleTwo />
-      <h1>2. Vue Directive</h1>
-      <hr />
-      <VueHtml />
-      <VueHtmlXSS />
-      <VueText />
-      <VueBind />
-      <VueBindClass />
-      <VueBindStyle />
-      <VueBindShorthand />
-      <VueIf />
-      <VueShow />
-      <VueFor />
-      <VuePre />
-      <VueOnce />
-      <VueCloak />
-      <VueMemo />
-    </div>
-
-    <!-- Day2 -->
-    <div v-if="activeTab === 'day2'">
-      <h1>Day2</h1>
-      <hr />
-      <h1>3. Vue Event Handling</h1>
-      <hr />
-      <EventBasic />
-      <EventObject />
-      <EventModifier />
-      <h1>4. Vue Form Handling</h1>
-      <hr />
-      <ModelBasic />
-      <ModelForm />
-      <ModelModifier />
-      <h1>5. Vue Style Handling</h1>
-      <hr />
-      <StyleScoped />
-      <h1>6. Reactive State</h1>
-      <hr />
-      <ReactiveRef />
-      <ReactiveReactive />
-      <h1>7. Computed & Watchers</h1>
-      <hr />
-      <ComputedBasic />
-      <WatchersBasic />
-      <WatchersMulti />
-      <WatchersDeep />
-      <WatchersReactive />
-      <WatchersRefArray />
-      <WatchersReactiveArray />
-      <WatchersWatchEffect />
-    </div>
-
-    <!-- Day3 -->
-    <div v-if="activeTab === 'day3'">
-      <h1>8. Component Lifecycle</h1>
-      <hr />
-      <LifeCycleParent />
-      <h1>9. Props & Emits</h1>
-      <hr />
-      <PropsEmitsParent />
-      <h1>10. Component Slot</h1>
-      <hr />
-      <SlotDefaultParent />
-      <SlotNamedParent />
-      <SlotScopedParent />
-    </div>
-
-    <!-- 과제 1-->
-    <div v-if="activeTab === 'exercise1'">
-      <WeatherMockup />
-    </div>
-
-    <!-- 과제 2-->
-    <div v-if="activeTab === 'exercise2'">
-      <WeatherComposition />
-    </div>
-
-    <!-- 과제 3-->
-    <div v-if="activeTab === 'exercise3'">
-      <WeatherParent />
-    </div>
-
-    <!-- 과제 4 Router 활용 -->
-    <div v-if="activeTab === 'exercise4'">
-      <div class="weather-router-shell">
-        <!-- 네비게이션 영역 -->
-        <nav class="router-nav">
-          <RouterLink to="/" class="router-nav-link">홈</RouterLink>
-          <RouterLink to="/favorites" class="router-nav-link">즐겨찾기</RouterLink>
-          <RouterLink to="/about" class="router-nav-link">소개</RouterLink>
-        </nav>
-
-        <!-- 콘텐츠 영역 -->
-        <RouterView />
+        <div class="tab-group">
+          <span class="tab-group-label tab-group-label--accent">과제</span>
+          <div class="tab-row">
+            <button
+              class="tab-btn tab-btn--accent"
+              :class="{ active: activeTab === 'exercise1' }"
+              @click="activeTab = 'exercise1'"
+            >
+              과제1
+            </button>
+            <button
+              class="tab-btn tab-btn--accent"
+              :class="{ active: activeTab === 'exercise2' }"
+              @click="activeTab = 'exercise2'"
+            >
+              과제2
+            </button>
+            <button
+              class="tab-btn tab-btn--accent"
+              :class="{ active: activeTab === 'exercise3' }"
+              @click="activeTab = 'exercise3'"
+            >
+              과제3
+            </button>
+            <button
+              class="tab-btn tab-btn--accent"
+              :class="{ active: activeTab === 'exercise4' }"
+              @click="activeTab = 'exercise4'"
+            >
+              과제4
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </header>
+
+    <main class="app-shell-main">
+      <!-- Day1 -->
+      <div class="day-panel" v-if="activeTab === 'day1'">
+        <h1>Day1</h1>
+        <hr />
+        <h1>1. 학습환경 구성</h1>
+        <hr />
+        <SampleOne />
+        <SampleTwo />
+        <h1>2. Vue Directive</h1>
+        <hr />
+        <VueHtml />
+        <VueHtmlXSS />
+        <VueText />
+        <VueBind />
+        <VueBindClass />
+        <VueBindStyle />
+        <VueBindShorthand />
+        <VueIf />
+        <VueShow />
+        <VueFor />
+        <VuePre />
+        <VueOnce />
+        <VueCloak />
+        <VueMemo />
+      </div>
+
+      <!-- Day2 -->
+      <div class="day-panel" v-if="activeTab === 'day2'">
+        <h1>Day2</h1>
+        <hr />
+        <h1>3. Vue Event Handling</h1>
+        <hr />
+        <EventBasic />
+        <EventObject />
+        <EventModifier />
+        <h1>4. Vue Form Handling</h1>
+        <hr />
+        <ModelBasic />
+        <ModelForm />
+        <ModelModifier />
+        <h1>5. Vue Style Handling</h1>
+        <hr />
+        <StyleScoped />
+        <h1>6. Reactive State</h1>
+        <hr />
+        <ReactiveRef />
+        <ReactiveReactive />
+        <h1>7. Computed & Watchers</h1>
+        <hr />
+        <ComputedBasic />
+        <WatchersBasic />
+        <WatchersMulti />
+        <WatchersDeep />
+        <WatchersReactive />
+        <WatchersRefArray />
+        <WatchersReactiveArray />
+        <WatchersWatchEffect />
+      </div>
+
+      <!-- Day3 -->
+      <div class="day-panel" v-if="activeTab === 'day3'">
+        <h1>Day3</h1>
+        <hr />
+        <h1>8. Component Lifecycle</h1>
+        <hr />
+        <LifeCycleParent />
+        <h1>9. Props & Emits</h1>
+        <hr />
+        <PropsEmitsParent />
+        <h1>10. Component Slot</h1>
+        <hr />
+        <SlotDefaultParent />
+        <SlotNamedParent />
+        <SlotScopedParent />
+      </div>
+
+      <!-- Day4 -->
+      <div class="day-panel" v-if="activeTab === 'day4'">
+        <h1>Day4</h1>
+        <hr />
+        <h1>11. Store</h1>
+        <hr />
+        <StoreCounter />
+        <h1>12. Axios</h1>
+        <hr />
+        <AxiosWeather />
+      </div>
+
+      <!-- 과제 1 Mockup -->
+      <div class="exercise-panel" v-if="activeTab === 'exercise1'">
+        <WeatherMockup />
+      </div>
+
+      <!-- 과제 2 Composition-->
+      <div class="exercise-panel" v-if="activeTab === 'exercise2'">
+        <WeatherComposition />
+      </div>
+
+      <!-- 과제 3 Component -->
+      <div class="exercise-panel" v-if="activeTab === 'exercise3'">
+        <WeatherParent />
+      </div>
+
+      <!-- 과제 4, 5 Router + Pinia -->
+      <div class="exercise-panel exercise-panel--router" v-if="activeTab === 'exercise4'">
+        <div class="weather-router-shell">
+          <!-- 네비게이션 영역 -->
+          <div class="router-topbar">
+            <nav class="router-nav">
+              <RouterLink to="/" class="router-nav-link">홈</RouterLink>
+              <RouterLink to="/favorites" class="router-nav-link">즐겨찾기</RouterLink>
+              <RouterLink to="/about" class="router-nav-link">소개</RouterLink>
+            </nav>
+
+            <UnitToggler />
+          </div>
+
+          <!-- 콘텐츠 영역 -->
+          <RouterView />
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
+<style>
+html,
+body {
+  display: block !important;
+  place-items: unset !important;
+  margin: 0;
+  padding: 0;
   width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+#app {
+  display: block !important;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: initial;
+}
+</style>
+
+<style scoped>
+/* ------------------------------------------------------------------ */
+/* 디자인 토큰                                                          */
+/* ------------------------------------------------------------------ */
+.app-shell {
+  --paper: #f5f7fb;
+  --paper-line: #dfe6f2;
+  --ink: #1b2436;
+  --sub: #5b6b82;
+  --accent: #2f5fae;
+  --accent-soft: #e7eefc;
+  --accent-line: #c3d4f2;
+  --highlight: #e08a2b;
+  --highlight-soft: #fdf0e0;
+  --card-bg: #ffffff;
+
+  width: 100%;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+/* ------------------------------------------------------------------ */
+/* 헤더 / 탭 바                                                         */
+/* ------------------------------------------------------------------ */
+.app-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(245, 247, 251, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--paper-line);
+  padding: 24px 48px 18px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-nav a {
+.app-title {
+  margin: 0 0 18px;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.tab-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.tab-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tab-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--sub);
+}
+
+.tab-group-label--accent {
+  color: var(--highlight);
+}
+
+.tab-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--paper-line);
+  background: #fff;
+  color: var(--sub);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.tab-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.tab-btn--accent:hover {
+  background: var(--highlight-soft);
+  border-color: #f0cfa0;
+  color: var(--highlight);
+}
+
+.tab-btn--accent.active {
+  background: var(--highlight);
+  border-color: var(--highlight);
+  color: #fff;
+}
+
+/* ------------------------------------------------------------------ */
+/* 본문 레이아웃                                                        */
+/* ------------------------------------------------------------------ */
+.app-shell-main {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px 48px 80px;
+  box-sizing: border-box;
+}
+
+/* Day 패널: 실습 컴포넌트를 감싸는 노트북 카드 */
+.day-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--paper-line);
+  border-radius: 16px;
+  padding: 28px 32px 36px;
+}
+
+/* 이 패널의 h1은 전부 "제목"이거나 "회차 구분선"인데,
+   맨 앞 h1(Day1 / 11.Store 등의 대제목)만 크게, 나머지는 회차 칩 스타일로 구분한다. */
+.day-panel h1 {
+  margin: 28px 0 4px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--accent);
+  background: var(--accent-soft);
   display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  padding: 6px 14px;
+  border-radius: 8px;
 }
 
-nav a:first-of-type {
-  border: 0;
+.day-panel > h1:first-of-type {
+  margin-top: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+  background: none;
+  padding: 0;
+  border-radius: 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+.day-panel hr {
+  margin: 10px 0 20px;
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, var(--paper-line), transparent 80%);
+}
+
+/* 실습 컴포넌트끼리 살짝 숨 쉴 공간 */
+.day-panel > * + * {
+  margin-top: 4px;
+}
+
+/* 과제 패널: 과제1~3은 자체 스타일을 가진 컴포넌트를 그대로 담는 얇은 래퍼,
+   과제4(Router+Pinia)는 이미 자체 카드 UI가 있어 추가 여백만 부여 */
+.exercise-panel {
+  display: flex;
+  justify-content: center;
+}
+
+.exercise-panel--router {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .app-shell-header {
+    padding: 20px 18px 16px;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  .app-shell-main {
+    padding: 20px 16px 60px;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  .day-panel {
+    padding: 20px 18px 28px;
   }
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+  .tab-groups {
+    gap: 16px;
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* 과제4(Router+Pinia) 영역: 기존 스타일 유지                            */
+/* ------------------------------------------------------------------ */
 .weather-router-shell {
   --sky-1: #eef4fb;
   --sky-2: #dbe9f8;
-  --ink: #1f2a3c;
-  --sub: #5b6b82;
-  --hot: #e0622b;
-  --hot-bg: #fdece1;
-  --cold: #2b7fe0;
-  --cold-bg: #e6f0fd;
   --card-bg: #ffffff;
   --border: #d9e3f0;
-  --accent: #2f5fae;
 
   max-width: 800px;
   margin: 0 auto;
@@ -258,10 +484,17 @@ nav a:first-of-type {
   background: linear-gradient(160deg, var(--sky-1), var(--sky-2) 70%);
 }
 
+.router-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
 .router-nav {
   display: flex;
   gap: 6px;
-  margin-bottom: 20px;
 }
 
 .router-nav-link {

@@ -13,15 +13,31 @@
     </div>
 
     <div class="card-right">
-      <div class="temp">{{ city.temp }}°</div>
+      <!-- 3. 단위 설정(configStore) 적용: 항상 섭씨로 저장된 city.temp를 현재 단위로 변환해서 표시 -->
+      <div class="temp">{{ configStore.convertTemp(city.temp) }}{{ configStore.unitSymbol }}</div>
+      <!-- 온도 라벨 임계값은 원본(섭씨) 값 기준으로 판단 -->
       <span class="label hot" v-if="city.temp >= 25">🔥 더움 (25도 이상)</span>
       <span class="label cold" v-else>❄️ 선선함 (25도 미만)</span>
-      <button class="detail-btn" @click.stop="$emit('click-detail', city)">상세보기</button>
+
+      <div class="card-actions">
+        <button
+          type="button"
+          class="favorite-btn"
+          :class="{ active: favoriteStore.isFavorite(city.id) }"
+          @click.stop="favoriteStore.toggleFavorite(city.id)"
+        >
+          {{ favoriteStore.isFavorite(city.id) ? '★' : '☆' }}
+        </button>
+        <button class="detail-btn" @click.stop="$emit('click-detail', city)">상세보기</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useConfigStore } from '../../../stores/configStore'
+import { useFavoriteStore } from '../../../stores/favoriteStore'
+
 defineProps({
   city: {
     type: Object,
@@ -34,6 +50,9 @@ defineProps({
 })
 
 defineEmits(['select-card', 'click-detail'])
+
+const configStore = useConfigStore()
+const favoriteStore = useFavoriteStore()
 </script>
 
 <style scoped>
@@ -119,6 +138,29 @@ defineEmits(['select-card', 'click-detail'])
 .label.cold {
   color: var(--cold, #2b7fe0);
   background: var(--cold-bg, #e6f0fd);
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.favorite-btn {
+  border: 1px solid var(--border, #d9e3f0);
+  background: #fff;
+  color: #c9ab2c;
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.favorite-btn.active {
+  background: #fff7dc;
+  border-color: #e3c65c;
 }
 
 .detail-btn {

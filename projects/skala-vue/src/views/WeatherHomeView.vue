@@ -6,14 +6,20 @@
     </header>
 
     <BaseDashboardCard title="도시 검색">
-      <SearchBar :search-query="searchText" @update-query="searchText = $event" />
+      <SearchBar
+        :search-query="searchText"
+        @update-query="searchText = $event"
+      />
     </BaseDashboardCard>
 
     <BaseDashboardCard title="정렬 및 통계">
       <div class="sort-control">
         <span>기온 순 정렬</span>
         <button class="sort-btn" @click="toggleSortOrder">{{ sortLabel }}</button>
-        <span class="avg-temp">평균 기온 : {{ averageTemp }}</span>
+        <!-- 3. 단위 설정(configStore) 적용: 평균 기온도 현재 단위로 변환해서 표시 -->
+        <span class="avg-temp">
+          평균 기온 : {{ configStore.convertTemp(averageTemp) }}{{ configStore.unitSymbol }}
+        </span>
       </div>
     </BaseDashboardCard>
 
@@ -43,9 +49,11 @@ import { useRouter } from 'vue-router'
 import BaseDashboardCard from '../components/exercise/day3_2/BaseDashboardCard.vue'
 import SearchBar from '../components/exercise/day3_2/SearchBar.vue'
 import WeatherCard from '../components/exercise/day3_2/WeatherCard.vue'
-import { weatherMockList } from '../data/weatherData.js'
+import { weatherMockList } from '../data/weatherData'
+import { useConfigStore } from '../stores/configStore'
 
 const router = useRouter()
+const configStore = useConfigStore()
 
 const weatherList = ref(weatherMockList)
 const searchText = ref('')
@@ -53,6 +61,8 @@ const selectedCityInfo = ref(null)
 const statusMessage = ref('도시 카드를 눌러보세요.')
 const sortOrder = ref('default')
 
+// 검색/정렬/평균은 항상 원본(섭씨) 값 기준으로 계산하고,
+// 화면 표시 시점에만 configStore.convertTemp()로 단위를 바꿔준다.
 const filteredWeatherList = computed(() =>
   weatherList.value.filter((city) => city.name.includes(searchText.value.trim())),
 )
@@ -100,7 +110,6 @@ const toggleSortOrder = () => {
   else sortOrder.value = 'default'
 }
 
-// window.alert() 대신 Programmatic Navigation으로 상세 페이지 이동
 const goToDetail = (city) => {
   router.push(`/weather/${city.id}`)
 }

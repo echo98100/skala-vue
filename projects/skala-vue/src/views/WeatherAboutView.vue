@@ -2,14 +2,16 @@
   <div class="about">
     <h1>Weather Router 소개</h1>
     <p>
-      Weather Router는 Vue Router 학습을 위해 만든 미니 날씨 대시보드입니다. 메인 화면에서 도시를
-      검색하고, 카드를 눌러 상세 기상관측 페이지로 이동해볼 수 있습니다.
+      Weather Router는 Vue Router / Pinia 학습을 위해 만든 미니 날씨 대시보드입니다.
+      메인 화면에서 도시를 검색하고, 카드를 눌러 상세 기상관측 페이지로 이동해볼 수 있습니다.
     </p>
 
     <ul class="feature-list">
       <li>🔍 도시 이름으로 실시간 검색 (컴포넌트 props / emit 연습)</li>
       <li>🌡️ 기온 기준 정렬 및 평균 기온 계산 (computed 연습)</li>
       <li>🧭 카드의 [상세보기] → Programmatic Navigation으로 상세 페이지 이동</li>
+      <li>🌗 섭씨 / 화씨 단위 전환 (Pinia configStore)</li>
+      <li>⭐ 즐겨찾기 도시 관리 (Pinia favoriteStore)</li>
       <li>🚧 정의되지 않은 경로 접근 시 Catch-all Route로 안내</li>
     </ul>
 

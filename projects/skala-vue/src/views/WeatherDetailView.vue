@@ -14,7 +14,10 @@
       <div class="stat-grid">
         <div class="stat">
           <span class="label">현재 기온</span>
-          <span class="value">{{ cityInfo.temp }}°</span>
+          <!-- 3. 단위 설정(configStore) 적용 -->
+          <span class="value">
+            {{ configStore.convertTemp(cityInfo.temp) }}{{ configStore.unitSymbol }}
+          </span>
         </div>
         <div class="stat">
           <span class="label">습도</span>
@@ -30,8 +33,18 @@
         </div>
       </div>
 
+      <!-- 임계값 판단은 원본(섭씨) 값 기준 -->
       <p class="temp-note" v-if="cityInfo.temp >= 25">🔥 현재 더운 편의 날씨입니다 (25도 이상)</p>
       <p class="temp-note" v-else>❄️ 현재 선선한 편의 날씨입니다 (25도 미만)</p>
+
+      <button
+        type="button"
+        class="favorite-toggle"
+        :class="{ active: favoriteStore.isFavorite(cityInfo.id) }"
+        @click="favoriteStore.toggleFavorite(cityInfo.id)"
+      >
+        {{ favoriteStore.isFavorite(cityInfo.id) ? '★ 즐겨찾기 해제' : '☆ 즐겨찾기 추가' }}
+      </button>
     </div>
 
     <div v-else class="not-found">
@@ -44,11 +57,14 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { weatherMockList } from '../data/weatherData'
+import { useConfigStore } from '../stores/configStore'
+import { useFavoriteStore } from '../stores/favoriteStore'
 
 const route = useRoute()
 const router = useRouter()
+const configStore = useConfigStore()
+const favoriteStore = useFavoriteStore()
 
-// Mount 시점에 라우트 params.cityId를 기반으로 Mock Data에서 도시 객체를 선택
 const cityInfo = ref(null)
 
 onMounted(() => {
@@ -142,9 +158,26 @@ onMounted(() => {
 }
 
 .temp-note {
-  margin: 0;
+  margin: 0 0 16px;
   font-size: 13px;
   color: var(--sub, #5b6b82);
+}
+
+.favorite-toggle {
+  border: 1px solid var(--border, #d9e3f0);
+  background: #fff;
+  color: var(--ink, #1f2a3c);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.favorite-toggle.active {
+  background: #fff7dc;
+  border-color: #e3c65c;
+  color: #8a6d1a;
 }
 
 .not-found {

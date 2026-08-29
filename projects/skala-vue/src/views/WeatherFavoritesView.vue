@@ -2,7 +2,11 @@
   <div class="favorites">
     <header>
       <h1>⭐ 즐겨찾기 도시</h1>
-      <p>자주 확인하는 도시만 모아둔 페이지입니다. (본인 추가 View / '/favorites' 라우팅)</p>
+      <p>
+        자주 확인하는 도시만 모아둔 페이지입니다. (본인 추가 View / '/favorites' 라우팅)
+        <br />
+        현재 즐겨찾기 {{ favoriteStore.favoriteCount }}곳
+      </p>
     </header>
 
     <BaseDashboardCard title="내가 즐겨찾는 도시">
@@ -16,7 +20,9 @@
           @click-detail="goToDetail"
         />
       </template>
-      <div class="empty" v-else>즐겨찾는 도시가 없습니다.</div>
+      <div class="empty" v-else>
+        즐겨찾는 도시가 없습니다. 홈 화면 카드의 ☆ 버튼을 눌러 추가해보세요.
+      </div>
     </BaseDashboardCard>
 
     <RouterLink to="/" class="home-link">← 메인 대시보드로 돌아가기</RouterLink>
@@ -28,16 +34,17 @@ import { ref, computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import BaseDashboardCard from '../components/exercise/day3_2/BaseDashboardCard.vue'
 import WeatherCard from '../components/exercise/day3_2/WeatherCard.vue'
-import { weatherMockList } from '../data/weatherData.js'
+import { weatherMockList } from '../data/weatherData'
+import { useFavoriteStore } from '../stores/favoriteStore'
 
 const router = useRouter()
 
-// 본인만의 반응형 상태: 즐겨찾기로 지정한 도시 id 목록
-const favoriteCityIds = ref(['city_01', 'city_03'])
+// 4. 본인만의 추가 Store 활용: 로컬 ref 대신 Pinia favoriteStore를 그대로 사용
+const favoriteStore = useFavoriteStore()
 const selectedName = ref('')
 
 const favoriteCities = computed(() =>
-  weatherMockList.filter((city) => favoriteCityIds.value.includes(city.id)),
+  weatherMockList.filter((city) => favoriteStore.isFavorite(city.id)),
 )
 
 const goToDetail = (city) => {
